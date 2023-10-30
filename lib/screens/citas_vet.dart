@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:veterinariesapp/screens/newrequestscreen.dart';
+import 'package:veterinariesapp/screens/scheduled_appo.dart';
+import 'package:veterinariesapp/screens/view_profile.dart';
 
 class VetCitas extends StatefulWidget {
   const VetCitas({Key? key}) : super(key: key);
@@ -6,6 +9,18 @@ class VetCitas extends StatefulWidget {
   @override
   _VetCitas createState() => _VetCitas();
 }
+
+//Prueba de datos sin backend
+Map<String, dynamic> yourData = {
+  'name': 'Dr. John',
+  'lastName': 'Doe',
+  'speciality': 'Veterinarian',
+  'address': '123 Main Street, City',
+  'phone': '555-555-5555',
+  'description': 'Experienced veterinarian with a passion for animals.',
+  'image':
+      'https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA4L3Jhd3BpeGVsb2ZmaWNlMV9waG90b2dyYXBoeV9vZl9hbl9zb3V0aF9pbmRpYW5fd29tZW5fYXNfYV9kb2N0b19kMzAxMDM3Zi03MDUzLTQxNDAtYmYyZS1lZDFlYWE0YTM3NDQucG5n.png',
+};
 
 class _VetCitas extends State<VetCitas> {
   @override
@@ -34,7 +49,19 @@ class _VetCitas extends State<VetCitas> {
                       backgroundImage: NetworkImage(
                         'https://cdn.discordapp.com/attachments/1114380845432705024/1168264033527410708/image.png',
                       ),
-                    ),
+                      child: GestureDetector(
+                        onTap: () {
+                          // Aquí puedes definir la lógica para redirigir a otra pantalla
+                          // Por ejemplo, puedes usar Navigator para la navegación.
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ProfileView(data: yourData),
+                            ),
+                          );
+                        },
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -43,6 +70,12 @@ class _VetCitas extends State<VetCitas> {
               ), // Espacio entre encabezado y cuadros de abajo
               InkWell(
                 onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => NewRequestsScreen(),
+                    ),
+                  );
                   // Lógica para el primer "botón"
                 },
                 child: Container(
@@ -93,6 +126,12 @@ class _VetCitas extends State<VetCitas> {
                 children: [
                   InkWell(
                     onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ScheduledAppointment(),
+                        ),
+                      );
                       // Lógica para el segundo "botón"
                     },
                     child: Container(
