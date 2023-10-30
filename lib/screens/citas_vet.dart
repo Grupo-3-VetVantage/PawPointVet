@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:veterinariesapp/screens/newrequestscreen.dart';
+import 'package:veterinariesapp/screens/scheduled_appo.dart';
 
 class VetCitas extends StatefulWidget {
   const VetCitas({Key? key}) : super(key: key);
@@ -43,6 +45,12 @@ class _VetCitas extends State<VetCitas> {
               ), // Espacio entre encabezado y cuadros de abajo
               InkWell(
                 onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => NewRequestsScreen(),
+                    ),
+                  );
                   // Lógica para el primer "botón"
                 },
                 child: Container(
@@ -93,6 +101,12 @@ class _VetCitas extends State<VetCitas> {
                 children: [
                   InkWell(
                     onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ScheduledAppointment(),
+                        ),
+                      );
                       // Lógica para el segundo "botón"
                     },
                     child: Container(
