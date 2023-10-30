@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:veterinariesapp/screens/view_profile.dart';
 
 //stf
 class RegisterVet extends StatefulWidget {
-  RegisterVet({super.key});
+  RegisterVet({Key? key}):super(key: key);
   
   final keyForm = GlobalKey<FormState>();
   final nameController = TextEditingController();
@@ -116,7 +117,9 @@ class _RegisterVetState extends State<RegisterVet> {
               margin: EdgeInsets.zero,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: ListView(
+                child: Form(
+                  key: widget.keyForm,
+                   child: ListView(
                   children: <Widget>[
                     _showName(),
                     const SizedBox(height: 10.0),
@@ -133,6 +136,7 @@ class _RegisterVetState extends State<RegisterVet> {
                     _buttonAdd(),
                     const SizedBox(height: 30),
                   ],
+                ),
                 ),
               ),
             ),
@@ -250,8 +254,10 @@ class _RegisterVetState extends State<RegisterVet> {
 
   Widget _buttonAdd(){
     return  ElevatedButton(
-    onPressed: (){
-                  //
+   onPressed: ()async{
+      if(widget.keyForm.currentState!.validate()){
+        await setVetInfo(context);
+      }
     },
     style: ButtonStyle(
     backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(22, 44, 81, 1)),
@@ -266,6 +272,25 @@ class _RegisterVetState extends State<RegisterVet> {
     ),
     child: const Text("Save"),
     );
+  }
+  //map info
+  Future setVetInfo(context)async{
+    Map<String, dynamic> jsonBody ={
+      'image': imageUrl,
+      'name': widget.nameController.text,
+      'lastName': widget.lastNameController.text,
+      'speciality': widget.specialityController.text,
+      'phone': widget.phoneController.text,
+      'address': widget.addressController.text,
+      'description': widget.descriptionController.text,
+    };
+    await Future.delayed(const Duration(seconds: 3));
+    Navigator.pop(context);
+    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context){
+      return ProfileView(//details vet info
+        data: jsonBody,
+      );
+    }), (route) => false);
   }
 }
 
