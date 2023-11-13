@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:veterinariesapp/screens/bar_vet.dart';
-import 'package:veterinariesapp/screens/signup_vet.dart';
+import 'package:veterinariesapp/model/veterinaryLogin_model.dart';
+
 import 'package:veterinariesapp/screens/citas_vet.dart';
 import 'package:veterinariesapp/services/veterinary_service.dart';
 
@@ -40,10 +40,32 @@ class _LoginVetState extends State<LoginVet> {
       // Show an error message or do something to handle the empty fields
       return;
     }
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const VetCitas()),
+    //create a VeterinaryLogin object
+    VeterinaryLogin veterinaryLogin = VeterinaryLogin(
+      email: email,
+      password: password,
     );
+
+    //validationlogin
+
+    //make de login request
+    VeterinaryLogin? result = await _vetService?.loginVet(veterinaryLogin);
+
+
+    if (result != null) {
+      // Login successful
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const VetCitas()),
+      );
+    } else {
+      // Login failed
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Invalid email or password'),
+          duration: const Duration(seconds: 3),
+        ));
+  }
   }
 
   @override

@@ -24,20 +24,30 @@ class VeterinaryService{
     
   }
   //login
-  Future<VeterinaryLogin?> login(VeterinaryLogin veterinaryLogin) async {
-    http.Response response = await http.post(Uri.parse("$baseUrl/Veterinary/Login"),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(veterinaryLogin.toMap()));
+  Future<VeterinaryLogin?> loginVet(VeterinaryLogin veterinary) async {
+  http.Response response = await http.post(
+    Uri.parse("$baseUrl/Veterinary/Login"),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(veterinary.toMap()),
+  );
 
-    if (response.statusCode == HttpStatus.ok) {
+  if (response.statusCode == HttpStatus.ok) {
+    if (response.body.isNotEmpty) {
       final jsonResponse = json.decode(response.body);
-      return VeterinaryLogin.fromJson(jsonResponse);
+      final veterinaryLogin = VeterinaryLogin.fromJson(jsonResponse);
+      return veterinaryLogin;
+    } else {
+      print('Signup failed. Server response is empty.');
+      return null;
     }
-
+  } else {
+    print('Signup failed. Server returned status: ${response.statusCode}');
     return null;
   }
+}
+  
 
   //signup
   Future<VeterinarySignup?> signup(VeterinarySignup veterinary) async {
