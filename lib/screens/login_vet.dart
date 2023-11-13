@@ -1,7 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:veterinariesapp/screens/bar_vet.dart';
 import 'package:veterinariesapp/screens/signup_vet.dart';
 import 'package:veterinariesapp/screens/citas_vet.dart';
+import 'package:veterinariesapp/services/veterinary_service.dart';
 
 class LoginVet extends StatefulWidget {
   const LoginVet({super.key});
@@ -11,22 +13,33 @@ class LoginVet extends StatefulWidget {
 }
 
 class _LoginVetState extends State<LoginVet> {
-  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool isPasswordVisible = false;
+  VeterinaryService? _vetService;
 
+  @override
+  void initState() {
+    _vetService = VeterinaryService();
+    super.initState();
+  }
   void togglePasswordVisibility() {
     setState(() {
       isPasswordVisible = !isPasswordVisible;
     });
   }
 
-  void perforLogin() {
-    String username = usernameController.text;
+  Future<void> perforLogin() async {
+    String email = emailController.text;
     String password = passwordController.text;
 
-    print('Username: $username');
+    print('Email: $email');
     print('Password: $password');
+
+    if (email.isEmpty || password.isEmpty) {
+      // Show an error message or do something to handle the empty fields
+      return;
+    }
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const VetCitas()),
@@ -60,11 +73,11 @@ class _LoginVetState extends State<LoginVet> {
                 width: 380,
                 height: 50,
                 child: TextField(
-                  controller: usernameController,
+                  controller: emailController,
                   decoration: const InputDecoration(
-                    labelText: 'User Name',
+                    labelText: 'Email',
                     border: OutlineInputBorder(),
-                    hintText: 'Jhon Don',
+                    hintText: 'jhon@email.com',
                   ),
                 ),
               ),
@@ -169,7 +182,7 @@ class _LoginVetState extends State<LoginVet> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const SignupVet()));
+                                    builder: (context) => const VetCitas()));
                           }),
                   ],
                 ),

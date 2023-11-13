@@ -5,7 +5,7 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: "BottomNavigationBar",
       home: CitasVet(),
     );
@@ -21,7 +21,7 @@ class CitasVet extends StatefulWidget {
 
 class _CitasVetState extends State<CitasVet> {
   var _currentPage = 0;
-  var _colores = [
+  final _colores = [
     Colors.green[200],
     Colors.yellow,
     Colors.blue[200],
@@ -36,7 +36,7 @@ class _CitasVetState extends State<CitasVet> {
         children: [
           Container(
             color: _colores[0],
-            child: Center(
+            child: const Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -54,7 +54,7 @@ class _CitasVetState extends State<CitasVet> {
           ),
           Container(
             color: _colores[1],
-            child: Center(
+            child: const Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -72,7 +72,7 @@ class _CitasVetState extends State<CitasVet> {
           ),
           Container(
             color: _colores[2],
-            child: Center(
+            child: const Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -96,7 +96,7 @@ class _CitasVetState extends State<CitasVet> {
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_today),
             label: "Citas",
@@ -113,7 +113,7 @@ class _CitasVetState extends State<CitasVet> {
         currentIndex: _currentPage,
         onTap: (int index) {
           _pageController.animateToPage(index,
-              duration: Duration(milliseconds: 500), curve: Curves.ease);
+              duration: const Duration(milliseconds: 500), curve: Curves.ease);
         },
       ),
     );
