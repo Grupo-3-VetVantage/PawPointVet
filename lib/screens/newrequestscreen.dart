@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:veterinariesapp/screens/priority_appointment.dart';
 
 class NewRequestsScreen extends StatefulWidget {
   const NewRequestsScreen({Key? key}) : super(key: key);
@@ -31,7 +32,8 @@ class _NewRequestsScreenState extends State<NewRequestsScreen>
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context); // Go back when the back button is pressed
+            Navigator.pop(
+                context); // Regresar cuando se presiona el botón de retroceso
           },
         ),
         bottom: TabBar(
@@ -101,7 +103,17 @@ class RequestCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Handle card click, navigate to more details
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PriorityAppointmentScreen(
+              animalImage: animalImage,
+              petType: petType,
+              serviceType: serviceType,
+              serviceTime: serviceTime,
+            ),
+          ),
+        );
       },
       child: Card(
         margin: EdgeInsets.all(10),
