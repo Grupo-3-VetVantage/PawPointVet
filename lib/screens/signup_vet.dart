@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:veterinariesapp/model/veterinarysignup_model.dart';
 import 'package:veterinariesapp/screens/login_vet.dart';
@@ -33,7 +32,6 @@ class _SignupVetState extends State<SignupVet> {
   
 
    Future<void> performSignup() async {
-    BuildContext currentContext = context;
     String name = nameController.text;
     String password = passwordController.text;
     String email = emailController.text;

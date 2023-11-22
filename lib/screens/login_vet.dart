@@ -66,9 +66,9 @@ class _LoginVetState extends State<LoginVet> {
       // Login failed
       WidgetsBinding.instance?.addPostFrameCallback((_) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Invalid email or password'),
-          duration: const Duration(seconds: 3),),
+        const SnackBar(
+          content: Text('Invalid email or password'),
+          duration: Duration(seconds: 3),),
         );});
   }
   }

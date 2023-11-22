@@ -93,7 +93,7 @@ class VeterinaryService{
   
   //Put
   Future<bool> updateVeterinaryProfile(UpdateVet updateVeterinary) async{
-    http.Response response = await http.put(
+    http.Response response = await http.patch(
       Uri.parse("$baseUrl/Veterinary/${updateVeterinary.id}"),
       headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',},

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:veterinariesapp/model/veterinary_model.dart';
-import 'package:veterinariesapp/screens/edit_profile.dart';
 import 'package:veterinariesapp/screens/newrequestscreen.dart';
 import 'package:veterinariesapp/screens/scheduled_appo.dart';
 import 'package:veterinariesapp/screens/view_profile.dart';
@@ -54,7 +53,7 @@ class _VetCitas extends State<VetCitas> {
                     ),
                     CircleAvatar(
                       radius: 30,
-                      backgroundImage: NetworkImage(
+                      backgroundImage: const NetworkImage(
                         'https://cdn.discordapp.com/attachments/1114380845432705024/1168264033527410708/image.png',
                       ),
                       child: GestureDetector(
@@ -73,7 +72,7 @@ class _VetCitas extends State<VetCitas> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ), // Espacio entre encabezado y cuadros de abajo
               InkWell(

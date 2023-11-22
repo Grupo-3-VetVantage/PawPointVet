@@ -8,6 +8,7 @@ class UpdateVet {
   final String description;
   final String imgUrl;
 
+
   const UpdateVet(
       {required this.id,
       required this.name,
@@ -28,6 +29,7 @@ class UpdateVet {
         description = json["description"],
         imgUrl = json ["imgUrl"];
 
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -37,7 +39,7 @@ class UpdateVet {
       'phone': phone,
       'address': addres,
       'description': description,
-      'imgUrl': imgUrl,
+      'imgUrl': imgUrl
     };
   }
 
