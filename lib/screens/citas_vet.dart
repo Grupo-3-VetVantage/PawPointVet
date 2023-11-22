@@ -1,28 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:veterinariesapp/model/veterinary_model.dart';
+import 'package:veterinariesapp/screens/edit_profile.dart';
 import 'package:veterinariesapp/screens/newrequestscreen.dart';
 import 'package:veterinariesapp/screens/scheduled_appo.dart';
 import 'package:veterinariesapp/screens/view_profile.dart';
+import 'package:veterinariesapp/services/veterinary_service.dart';
 
 class VetCitas extends StatefulWidget {
-  const VetCitas({Key? key}) : super(key: key);
+  final Veterinary vet;
+  const VetCitas({Key? key, required this.vet}) : super(key: key);
 
   @override
   _VetCitas createState() => _VetCitas();
 }
 
-//Prueba de datos sin backend
-Map<String, dynamic> yourData = {
-  'name': 'Dr. John',
-  'lastName': 'Doe',
-  'speciality': 'Veterinarian',
-  'address': '123 Main Street, City',
-  'phone': '555-555-5555',
-  'description': 'Experienced veterinarian with a passion for animals.',
-  'image':
-      'https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA4L3Jhd3BpeGVsb2ZmaWNlMV9waG90b2dyYXBoeV9vZl9hbl9zb3V0aF9pbmRpYW5fd29tZW5fYXNfYV9kb2N0b19kMzAxMDM3Zi03MDUzLTQxNDAtYmYyZS1lZDFlYWE0YTM3NDQucG5n.png',
-};
-
 class _VetCitas extends State<VetCitas> {
+  Veterinary? _vetDetails;
+  @override
+  void initState(){
+    super.initState();
+    veterinaryDetails();
+  }
+
+  Future<void> veterinaryDetails() async{
+    if(widget.vet.id!= 0 ){
+      Veterinary? vetDetails = await VeterinaryService().getVeterinaryById(widget.vet.id);
+      setState(() {
+        _vetDetails = vetDetails;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +64,7 @@ class _VetCitas extends State<VetCitas> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ProfileView(data: yourData),
+                              builder: (context) => ProfileView(data: _vetDetails),
                             ),
                           );
                         },

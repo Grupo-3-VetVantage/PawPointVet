@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:veterinariesapp/model/updateveterinary.dart';
+import 'package:veterinariesapp/model/veterinary_model.dart';
 import 'package:veterinariesapp/screens/view_profile.dart';
+import 'package:veterinariesapp/services/veterinary_service.dart';
 
 //stf
-class RegisterVet extends StatefulWidget {
-  RegisterVet({Key? key}):super(key: key);
+class EditVetProfile extends StatefulWidget {
+  final Veterinary? data;
+  EditVetProfile({Key? key, required this.data}):super(key: key);
   
   final keyForm = GlobalKey<FormState>();
   final nameController = TextEditingController();
@@ -14,16 +18,30 @@ class RegisterVet extends StatefulWidget {
   final descriptionController = TextEditingController();
 
   @override
-  State<RegisterVet> createState() => _RegisterVetState();
+  State<EditVetProfile> createState() => _EditVetProfileState();
 }
 
-class _RegisterVetState extends State<RegisterVet> {
+class _EditVetProfileState extends State<EditVetProfile> {
   String imageUrl = "";
   void updateImageUrl(String newImage){
     setState(() {
       imageUrl = newImage;
     });
   }
+  //inicializar con los datos actuales
+  @override
+  void initState(){
+    super.initState();
+    widget.nameController.text = widget.data?.name ?? "";
+    widget.lastNameController.text = widget.data?.lastname ?? "";
+    widget.specialityController.text = widget.data?.speciality ?? "";
+    widget.phoneController.text = widget.data?.phone ?? "";
+    widget.addressController.text = widget.data?.addres ?? "";
+    widget.descriptionController.text = widget.data?.description ?? "";
+    imageUrl = widget.data?.imgUrl ?? "";
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -255,9 +273,24 @@ class _RegisterVetState extends State<RegisterVet> {
   Widget _buttonAdd(){
     return  ElevatedButton(
    onPressed: ()async{
-      if(widget.keyForm.currentState!.validate()){
-        await setVetInfo(context);
-      }
+     if(widget.keyForm.currentState?.validate() ?? false){
+      UpdateVet update = UpdateVet(
+        id: widget.data?.id ?? 0, 
+        name: widget.nameController.text, 
+        lastname: widget.lastNameController.text, 
+        speciality: widget.specialityController.text, 
+        phone: widget.phoneController.text, 
+        addres: widget.addressController.text, 
+        description: widget.descriptionController.text, 
+        imgUrl: imageUrl,);
+      VeterinaryService().updateVeterinaryProfile(update).then((success){ 
+          if(success){
+            print('Profile updated successfully');
+          }else{
+            print('Failed to update profile');
+          }
+      });
+     }
     },
     style: ButtonStyle(
     backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(22, 44, 81, 1)),
@@ -272,25 +305,6 @@ class _RegisterVetState extends State<RegisterVet> {
     ),
     child: const Text("Save"),
     );
-  }
-  //map info
-  Future setVetInfo(context)async{
-    Map<String, dynamic> jsonBody ={
-      'image': imageUrl,
-      'name': widget.nameController.text,
-      'lastName': widget.lastNameController.text,
-      'speciality': widget.specialityController.text,
-      'phone': widget.phoneController.text,
-      'address': widget.addressController.text,
-      'description': widget.descriptionController.text,
-    };
-    await Future.delayed(const Duration(seconds: 3));
-    Navigator.pop(context);
-    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context){
-      return ProfileView(//details vet info
-        data: jsonBody,
-      );
-    }), (route) => false);
   }
 }
 

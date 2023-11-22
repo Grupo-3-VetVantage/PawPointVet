@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:veterinariesapp/model/veterinary_model.dart';
+import 'package:veterinariesapp/screens/edit_profile.dart';
 
 class ProfileView extends StatelessWidget {
-  final Map<String, dynamic> data;
+  final Veterinary? data;
   const ProfileView({Key? key, required this.data}): super(key: key);
 
   @override
@@ -12,6 +14,7 @@ class ProfileView extends StatelessWidget {
           _background(context),
           _profileImage(context),
           _vetInfo(context),
+          _editIcon(context),
         ],
       )
     );
@@ -47,9 +50,9 @@ class ProfileView extends StatelessWidget {
               height: 250,
               color: Colors.transparent,
               child: Center(
-                child: data['image'].isEmpty
-                    ? const Icon(Icons.image_search_rounded, size: 150, color: Colors.black)
-                    : Image.network(data['image']),
+                child: (data?.imgUrl != null && data!.imgUrl.isNotEmpty)
+                    ? Image.network(data!.imgUrl)
+                    : const Icon(Icons.image_search_rounded, size: 150, color: Colors.black),
               ),
             ),
           ),
@@ -60,6 +63,7 @@ class ProfileView extends StatelessWidget {
 
   //vet info
   Widget _vetInfo(BuildContext context){
+    print('Get veterinary by id : $data');
      return Center(
           child: Container(
             width: double.infinity,
@@ -80,7 +84,7 @@ class ProfileView extends StatelessWidget {
                           TextSpan(
                               children: [
                                   TextSpan(
-                                      text: data['name'],
+                                      text: data?.name,
                                       style: const TextStyle(
                                           color: Colors.black,
                                           fontSize: 25,
@@ -89,7 +93,7 @@ class ProfileView extends StatelessWidget {
                                   ),
                                   const TextSpan(text: ' ',),
                                   TextSpan(
-                                      text: data['lastName'],
+                                      text: data?.lastname ?? 'No Last Name',
                                       style: const TextStyle(
                                           color: Colors.black,
                                           fontSize: 25,
@@ -98,7 +102,7 @@ class ProfileView extends StatelessWidget {
                                   ),
                                   const TextSpan(text: '\n', ),
                                   TextSpan(
-                                      text: data['speciality'],
+                                      text: data?.speciality,
                                       style: const TextStyle(
                                           color: Color.fromRGBO(161, 161, 161, 1),
                                           fontSize: 20,
@@ -106,7 +110,7 @@ class ProfileView extends StatelessWidget {
                                   ),
                                    const TextSpan(text: '\n\n',),
                                   TextSpan(
-                                      text: data['address'],
+                                      text: data?.addres,
                                       style: const TextStyle(
                                           color: Color.fromRGBO(161, 161, 161, 1),
                                           fontSize: 20,
@@ -123,7 +127,7 @@ class ProfileView extends StatelessWidget {
                                     ),
                                   ),
                                   TextSpan(
-                                      text: data['phone'],
+                                      text: data?.phone,
                                       style: const TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold,
@@ -140,7 +144,7 @@ class ProfileView extends StatelessWidget {
                                   ),
                                    const TextSpan(text: '\n', ),
                                   TextSpan(
-                                      text: data['description'],
+                                      text: data?.description,
                                       style: const TextStyle(
                                           color: Color.fromRGBO(161, 161, 161, 1),
                                           fontSize: 20,
@@ -158,5 +162,25 @@ class ProfileView extends StatelessWidget {
     );
   }
 
+  //icon
+  Widget _editIcon(BuildContext context) {
+    return Positioned(
+      top: 290, 
+      right: 20, 
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => EditVetProfile(data: data)),
+          );
+        },
+        child: const Icon(
+          Icons.edit_square,
+          color: Colors.black,
+          size: 35,
+        ),
+      ),
+    );
+  }
   
 }
