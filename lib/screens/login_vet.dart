@@ -1,8 +1,11 @@
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:veterinariesapp/model/veterinaryLogin_model.dart';
+import 'package:veterinariesapp/model/veterinary_model.dart';
 
 import 'package:veterinariesapp/screens/citas_vet.dart';
+import 'package:veterinariesapp/screens/signup_vet.dart';
 import 'package:veterinariesapp/services/veterinary_service.dart';
 
 class LoginVet extends StatefulWidget {
@@ -49,22 +52,24 @@ class _LoginVetState extends State<LoginVet> {
     //validationlogin
 
     //make de login request
-    VeterinaryLogin? result = await _vetService?.loginVet(veterinaryLogin);
+    Veterinary? result = await _vetService?.loginVet(veterinaryLogin);
 
 
     if (result != null) {
       // Login successful
+      print('User ID: ${result.id}');
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const VetCitas()),
+        MaterialPageRoute(builder: (context) => VetCitas(vet: result)),
       );
     } else {
       // Login failed
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Text('Invalid email or password'),
-          duration: const Duration(seconds: 3),
-        ));
+          duration: const Duration(seconds: 3),),
+        );});
   }
   }
 
@@ -204,7 +209,7 @@ class _LoginVetState extends State<LoginVet> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const VetCitas()));
+                                    builder: (context) => const SignupVet()));
                           }),
                   ],
                 ),

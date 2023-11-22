@@ -1,10 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:veterinariesapp/model/veterinarysignup_model.dart';
-import 'package:veterinariesapp/screens/bar_vet.dart';
-import 'package:veterinariesapp/screens/citas_vet.dart';
-import 'package:veterinariesapp/screens/home_vet.dart';
-import 'package:veterinariesapp/screens/view_profile.dart';
+import 'package:veterinariesapp/screens/login_vet.dart';
 import 'package:veterinariesapp/services/veterinary_service.dart';
 
 class SignupVet extends StatefulWidget {
@@ -61,7 +58,7 @@ class _SignupVetState extends State<SignupVet> {
 
     // Check the result and navigate to the home screen if successful
   
-    Navigator.push( context,MaterialPageRoute(builder: (context) => const VetCitas()));
+    Navigator.push( context,MaterialPageRoute(builder: (context) => LoginVet()));
     
   }
   @override
