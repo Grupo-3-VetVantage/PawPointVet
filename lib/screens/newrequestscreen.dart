@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:veterinariesapp/model/meeting.dart';
+import 'package:veterinariesapp/model/pet.dart';
 import 'package:veterinariesapp/screens/priority_appointment.dart';
+import 'package:veterinariesapp/services/veterinary_service.dart';
 
 class NewRequestsScreen extends StatefulWidget {
-  const NewRequestsScreen({Key? key}) : super(key: key);
+  final int vetId;
+  const NewRequestsScreen({Key? key, required this.vetId}) : super(key: key);
 
   @override
   _NewRequestsScreenState createState() => _NewRequestsScreenState();
@@ -11,11 +15,29 @@ class NewRequestsScreen extends StatefulWidget {
 class _NewRequestsScreenState extends State<NewRequestsScreen>
     with SingleTickerProviderStateMixin {
   TabController? _tabController;
+  List<Meeting> meetings = []; // Todas
+  List<Meeting> priorityMeetings = []; // Prioridades
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    getMeetings();
+  }
+
+  void getMeetings() async {
+    VeterinaryService veterinaryService = VeterinaryService();
+    List<Meeting>? fetchedMeetings =
+        await veterinaryService.getMeetingByVetId(widget.vetId);
+    if (fetchedMeetings != null) {
+      setState(() {
+        meetings = fetchedMeetings;
+        priorityMeetings = meetings
+            .where((element) =>
+                element.description.toLowerCase().contains('emergency'))
+            .toList();
+      });
+    }
   }
 
   @override
@@ -32,8 +54,7 @@ class _NewRequestsScreenState extends State<NewRequestsScreen>
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(
-                context); // Regresar cuando se presiona el botón de retroceso
+            Navigator.pop(context);
           },
         ),
         bottom: TabBar(
@@ -47,8 +68,8 @@ class _NewRequestsScreenState extends State<NewRequestsScreen>
       body: TabBarView(
         controller: _tabController,
         children: [
-          RequestsList(isPrioritaries: true),
-          RequestsList(isPrioritaries: false),
+          RequestsList(meetings: priorityMeetings),
+          RequestsList(meetings: meetings),
         ],
       ),
     );
@@ -56,43 +77,47 @@ class _NewRequestsScreenState extends State<NewRequestsScreen>
 }
 
 class RequestsList extends StatelessWidget {
-  final bool isPrioritaries;
+  final List<Meeting> meetings;
 
-  RequestsList({required this.isPrioritaries});
+  RequestsList({required this.meetings});
 
   @override
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        // Create cards for each request based on the isPrioritaries flag
-        if (isPrioritaries)
-          RequestCard(
-            animalImage:
-                'https://as01.epimg.net/diarioas/imagenes/2022/05/29/actualidad/1653826510_995351_1653826595_noticia_normal_recorte1.jpg',
-            petType: 'Dog',
-            serviceType: 'Checkup',
-            serviceTime: '10:00 AM',
+       for (Meeting meeting in meetings)
+          FutureBuilder<Pet?>(
+            future: VeterinaryService().getPetById(meeting.petId),
+            builder: (context, AsyncSnapshot<Pet?> snapshot) {
+              if (snapshot.hasData && snapshot.data != null) {
+                final Pet pet = snapshot.data!;
+
+                return RequestCard(
+                  petName: pet.name,
+                  animalImage: pet.imgUrl,
+                  petType: pet.specie,
+                  serviceType: meeting.description,
+                  serviceTime: meeting.dateToMeet.toString(),
+                );
+              } else {
+                // Si no hay datos disponibles, puedes retornar un widget alternativo
+                return Container();
+              }
+            },
           ),
-        RequestCard(
-          animalImage:
-              'https://static.nationalgeographic.es/files/styles/image_3200/public/75552.ngsversion.1422285553360.jpg?w=1600&h=1067',
-          petType: 'Cat',
-          serviceType: 'Vaccination',
-          serviceTime: '11:30 AM',
-        ),
-        // Add more RequestCard widgets as needed
       ],
     );
   }
 }
 
 class RequestCard extends StatelessWidget {
+  final String petName;
   final String animalImage;
   final String petType;
   final String serviceType;
   final String serviceTime;
-
   RequestCard({
+    required this.petName,
     required this.animalImage,
     required this.petType,
     required this.serviceType,
@@ -107,6 +132,7 @@ class RequestCard extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => PriorityAppointmentScreen(
+              petName: petName,
               animalImage: animalImage,
               petType: petType,
               serviceType: serviceType,
@@ -133,6 +159,7 @@ class RequestCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Text('Pet Name: $petName'),
                   Text('Pet Type: $petType'),
                   Text('Service Type: $serviceType'),
                   Text('Service Time: $serviceTime'),

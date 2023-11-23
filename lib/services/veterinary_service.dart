@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:veterinariesapp/model/meeting.dart';
 import 'package:veterinariesapp/model/pet.dart';
 import 'package:veterinariesapp/model/update_meeting.dart';
-import 'package:veterinariesapp/model/updateveterinary.dart';
 import 'package:veterinariesapp/model/veterinaryLogin_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:veterinariesapp/model/veterinary_model.dart';
@@ -87,7 +86,7 @@ class VeterinaryService{
     }
   }
   //Put
-  Future<bool> updateVeterinaryProfile(UpdateVet updateVeterinary) async{
+  Future<bool> updateVeterinaryProfile(Veterinary updateVeterinary) async{
     http.Response response = await http.patch(
       Uri.parse("$baseUrl/Veterinary/${updateVeterinary.id}"),
       headers: <String, String>{
@@ -100,6 +99,36 @@ class VeterinaryService{
     }else{
       print('no se actualizo con exito');
       return false;
+    }
+  }
+  //user/getpets/id
+  Future<List<Pet>?> getPetsByUserId(int id) async{
+    http.Response response = await http.get(
+      Uri.parse("$baseUrl/User/GetPets/$id"),);
+    if (response.statusCode == HttpStatus.ok) {
+      final jsonResponse = json.decode(response.body);
+      final pets = <Pet>[];
+      for (var item in jsonResponse) {
+        pets.add(Pet.fromJson(item));
+      }
+      return pets;
+    }
+    return null;
+  }
+  //pet/id
+  Future<Pet?> getPetById(int id) async{
+    http.Response response = await http.get(
+      Uri.parse("$baseUrl/Pet/$id"),
+      headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',},
+    );
+    if(response.statusCode == HttpStatus.ok){
+      print('success');
+      final jsonResponse = json.decode(response.body);
+      return Pet.fromJson(jsonResponse);
+    }else{
+      print('Get pet by id failed. Server returned status: ${response.statusCode}');
+      return null;
     }
   }
   //get all pets
@@ -127,6 +156,39 @@ class VeterinaryService{
       return meetings;
     }
     return null;
+  }
+  //get meeting by petId
+  Future<List<Meeting>?> getMeetingByPetId(int id)async{
+    http.Response response = await http.get(Uri.parse("$baseUrl/Meeting/MeetingPet/$id"),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',},
+    );
+    if(response.statusCode == HttpStatus.ok){
+      print('success');
+      final List<dynamic> jsonResponse = json.decode(response.body);
+      //map
+      List<Meeting> meetings = jsonResponse.map((data) => Meeting.fromJson(data)).toList();
+      return meetings;
+    }else{
+      print('Get meeting by vetId failed. Server returned status: ${response.statusCode}');
+      return [];
+    }
+  }
+   Future<List<Meeting>?> getMeetingByVetId(int id)async{
+    http.Response response = await http.get(Uri.parse("$baseUrl/Meeting/MeetingVet/$id"),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',},
+    );
+    if(response.statusCode == HttpStatus.ok){
+      print('success');
+      final List<dynamic> jsonResponse = json.decode(response.body);
+      //map
+      List<Meeting> meetings = jsonResponse.map((data) => Meeting.fromJson(data)).toList();
+      return meetings;
+    }else{
+      print('Get meeting by vetId failed. Server returned status: ${response.statusCode}');
+      return [];
+    }
   }
 
   //update Meeting

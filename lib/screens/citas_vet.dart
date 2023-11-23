@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:veterinariesapp/model/meeting.dart';
 import 'package:veterinariesapp/model/veterinary_model.dart';
 import 'package:veterinariesapp/screens/newrequestscreen.dart';
 import 'package:veterinariesapp/screens/scheduled_appo.dart';
@@ -8,6 +9,7 @@ import 'package:veterinariesapp/services/veterinary_service.dart';
 class VetCitas extends StatefulWidget {
   final Veterinary vet;
   const VetCitas({Key? key, required this.vet}) : super(key: key);
+
 
   @override
   _VetCitas createState() => _VetCitas();
@@ -80,11 +82,11 @@ class _VetCitas extends State<VetCitas> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => NewRequestsScreen(),
+                      builder: (context) => NewRequestsScreen(vetId: widget.vet.id),//
                     ),
                   );
                   // Lógica para el primer "botón"
-                },
+                },  
                 child: Container(
                   width: 350, // Tamaño del cuadro de arriba
                   height: 190,
@@ -114,7 +116,7 @@ class _VetCitas extends State<VetCitas> {
                         ),
                         SizedBox(height: 10),
                         Text(
-                          'Citas Agendadas',
+                          'Nuevas solicitudes de citas',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,

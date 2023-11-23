@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class PriorityAppointmentScreen extends StatefulWidget {
+  final String petName;
   final String animalImage;
   final String petType;
   final String serviceType;
   final String serviceTime;
 
   PriorityAppointmentScreen({
+    required this.petName,
     required this.animalImage,
     required this.petType,
     required this.serviceType,
@@ -61,6 +63,9 @@ class _PriorityAppointmentScreenState extends State<PriorityAppointmentScreen> {
                         radius: 75,
                         backgroundImage: NetworkImage(widget.animalImage),
                       ),
+                      SizedBox(height: 20),
+                      buildInfoRow(Icons.schedule,
+                          'Nombre : ${widget.petName}'),
                       SizedBox(height: 20),
                       buildInfoRow(Icons.schedule,
                           'Fecha y Hora: ${widget.serviceTime}'),
