@@ -80,7 +80,7 @@ class _ScheduledAppointmentState extends State<ScheduledAppointment> {
                     dateOfBirth: '',
                     imgUrl: '',
                     specie: '',
-                    ownerId: 0,
+                    ownerId: 0
                   ),
                 );
                 return ListTile(
@@ -128,6 +128,7 @@ class _ScheduledAppointmentState extends State<ScheduledAppointment> {
       description: meeting.description,
       vetId: meeting.vetId,
       userId: meeting.userId,
+      petId: meeting.petId,
     ));
     if (success) {
       _loadData();

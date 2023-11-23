@@ -5,6 +5,7 @@ class UpdateMeeting {
   final String description;
   final int vetId;
   final int userId;
+  final int petId;
 
   const UpdateMeeting(
       {required this.id,
@@ -12,7 +13,8 @@ class UpdateMeeting {
       required this.finish,
       required this.description,
       required this.vetId,
-      required this.userId});
+      required this.userId,
+      required this.petId});
   
   UpdateMeeting.fromJson(Map<String, dynamic> json):
     id = json["id"],
@@ -20,7 +22,8 @@ class UpdateMeeting {
     finish = json["finish"],
     description = json["description"],
     vetId = json["vetId"],
-    userId = json["userId"];
+    userId = json["userId"],
+    petId = json["petId"];
     
   Map<String, dynamic> toMap() {
     return {
@@ -30,6 +33,7 @@ class UpdateMeeting {
       'description': description,
       'vetId': vetId,
       'userId': userId,
+      'petId': petId,
     };
   }
 
@@ -39,5 +43,6 @@ class UpdateMeeting {
         finish = map['finish'],
         description = map['description'],
         vetId = map['vetId'],
-        userId = map['userId'];
+        userId = map['userId'],
+        petId = map['petId'];
 }
