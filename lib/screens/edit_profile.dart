@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:veterinariesapp/model/updateveterinary.dart';
 import 'package:veterinariesapp/model/veterinary_model.dart';
 import 'package:veterinariesapp/screens/view_profile.dart';
 import 'package:veterinariesapp/services/veterinary_service.dart';
