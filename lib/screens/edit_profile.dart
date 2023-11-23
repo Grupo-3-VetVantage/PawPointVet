@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:veterinariesapp/model/updateveterinary.dart';
 import 'package:veterinariesapp/model/veterinary_model.dart';
+import 'package:veterinariesapp/screens/view_profile.dart';
 import 'package:veterinariesapp/services/veterinary_service.dart';
 
 //stf
@@ -276,7 +277,7 @@ class _EditVetProfileState extends State<EditVetProfile> {
     return  ElevatedButton(
    onPressed: ()async{
      if(widget.keyForm.currentState?.validate() ?? false){
-      UpdateVet update = UpdateVet(
+      Veterinary update = Veterinary(
         id: widget.data?.id ?? 0, 
         name: widget.nameController.text, 
         lastname: widget.lastNameController.text, 
@@ -288,6 +289,8 @@ class _EditVetProfileState extends State<EditVetProfile> {
       VeterinaryService().updateVeterinaryProfile(update).then((success){ 
           if(success){
             print('Profile updated successfully');
+            Navigator.push(context,MaterialPageRoute(builder: (context) => ProfileView(data: update)),
+      );
           }else{
             print('Failed to update profile');
           }
