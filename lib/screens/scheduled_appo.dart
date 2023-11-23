@@ -79,6 +79,7 @@ class _ScheduledAppointmentState extends State<ScheduledAppointment> {
                     weight: 0,
                     dateOfBirth: '',
                     imgUrl: '',
+                    specie: '',
                     ownerId: 0,
                   ),
                 );
