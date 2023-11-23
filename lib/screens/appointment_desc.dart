@@ -1,72 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:veterinariesapp/model/meeting.dart';
+import 'package:veterinariesapp/model/pet.dart';
 
-class AppointmentDescription extends StatefulWidget {
-  const AppointmentDescription({Key? key}) : super(key: key);
+class AppointmentDescription extends StatelessWidget {
+  final Meeting meeting;
+  final Pet pet;
 
-  @override
-  State<AppointmentDescription> createState() => _AppointmentDescriptionState();
-}
+  const AppointmentDescription({Key? key, required this.meeting, required this.pet}) : super(key: key);
 
-class _AppointmentDescriptionState extends State<AppointmentDescription> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Descripción de Citas'),
+        title: const Text('Descripción de la cita'),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
       ),
-      body: ListView(
-        children: <Widget>[
-          AppointmentItem(
-            petImage: 'https://www.elcomercio.com/wp-content/uploads/2023/01/perrito.jpg',
-            petName: 'Lila',
-            description: 'Lila necesita una revisión general.',
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Card(
+          child: Column(
+            children: [
+              ListTile(
+                title: Text(
+                  pet.name,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Edad: ${pet.age}, Fecha de nacimiento: ${pet.dateOfBirth}'),
+                    Text('Descripción: ${pet.description}'),
+                  ],
+                ),
+                leading: CircleAvatar(
+                  backgroundImage: NetworkImage(pet.imgUrl),
+                ),
+              ),
+              ListTile(
+                title: const Text('Descripción de la cita'),
+                subtitle: Text(meeting.description),
+              ),
+              ListTile(
+                title: const Text('Fecha de la cita'),
+                subtitle: Text(meeting.dateToMeet),
+              ),
+            ],
           ),
-          AppointmentItem(
-            petImage: 'https://mf.b37mrtl.ru/actualidad/public_images/2019.04/article/5ca865b308f3d9f63a8b4567.jpg',
-            petName: 'Matie',
-            description: 'Matie necesita profilaxis dental.',
-          ),
-          AppointmentItem(
-            petImage: 'https://cdn.shopify.com/s/files/1/0268/6861/files/husky-siberiano-bosque_edaaae94-40fa-4d86-a905-4d9df2b63232_480x480.jpg',
-            petName: 'Neil',
-            description: 'Neil tiene una urgencia médica.',
-          ),
-          AppointmentItem(
-            petImage: 'https://t1.ea.ltmcdn.com/es/posts/5/6/2/10_caracteristicas_de_los_perros_24265_600_square.jpg',
-            petName: 'Nacho',
-            description: 'Nacho necesita una consulta general.',
-          ),
-        ],
+        ),
       ),
-    );
-  }
-}
-
-class AppointmentItem extends StatelessWidget {
-  final String petImage;
-  final String petName;
-  final String description;
-
-  AppointmentItem({
-    required this.petImage,
-    required this.petName,
-    required this.description,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: CircleAvatar(
-        backgroundImage: NetworkImage(petImage),
-      ),
-      title: Text(petName),
-      subtitle: Text(description),
     );
   }
 }
